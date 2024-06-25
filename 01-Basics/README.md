@@ -143,3 +143,29 @@ const cube2 = new THREE.Mesh(
 )
 group.add(cube2)
 ```
+
+## Animaciones/Animation
+Las animaciones en Three.js son técnicas que permiten crear movimiento o transformaciones en los objetos 3D a lo largo del tiempo. Esto puede incluir cambios en la posición, rotación, escala, o cualquier otra propiedad que afecte la apariencia o comportamiento de un objeto en la escena. Las animaciones son fundamentales para dar vida a las escenas 3D, creando efectos visuales dinámicos o simulando comportamientos físicos.
+
+En Three.js, las animaciones pueden ser implementadas de varias maneras:
+
+1. `Animaciones de fotogramas clave (Keyframe Animations)`: Utilizan una serie de valores predefinidos para las propiedades de los objetos en momentos específicos. Three.js interpola automáticamente entre estos valores para crear transiciones suaves.
+
+2. `Animaciones basadas en bucles de animación`: Se ejecutan dentro del ciclo de renderizado de la aplicación, donde las propiedades de los objetos se actualizan en cada cuadro basándose en el tiempo o en una lógica específica. Esto es útil para animaciones continuas o dependientes del tiempo real.
+
+3. `Sistemas de partículas`: Permiten la animación de grandes cantidades de objetos pequeños, como chispas, humo, o lluvia, creando efectos complejos a partir de la interacción de elementos individuales.
+
+4. `Animaciones con cuaterniones`: Para rotaciones complejas sin sufrir el problema del bloqueo de cardán, utilizando interpolación esférica (slerp) entre orientaciones.
+
+5. `Uso de la biblioteca de animación de Three.js (AnimationMixer y AnimationClip)`: Three.js proporciona un sistema de animación que permite reproducir, pausar, detener y mezclar animaciones importadas o definidas en el código.
+
+### Frames
+En el contexto de Three.js y la programación de gráficos 3D en general, un "frame" se refiere a un único cuadro o imagen en una secuencia de animación o visualización. Cada frame representa el estado visual de la escena en un momento específico. Cuando se renderizan múltiples frames en rápida sucesión, se crea la ilusión de movimiento o animación.
+
+Three.js utiliza un bucle de animación, comúnmente implementado con la función requestAnimationFrame, para actualizar y renderizar la escena repetidamente a una alta tasa de frames por segundo (FPS). Esto permite animaciones fluidas y la interactividad en tiempo real. En cada iteración del bucle de animación (es decir, en cada frame), se pueden realizar cambios en la escena, como mover objetos, cambiar colores, aplicar transformaciones, y luego renderizar la escena actualizada
+
+> La mayoria de las pantallas corren a 60 frames por segundo(FPS). Pero hay computadoras que pueden correr a una mayor tasa de frames.
+
+> Las animaciones deben verse igual en distintos dispositivos independientemente de la tasa de frames. 
+
+> Si hay una tasa baja de frames puede significar que tenemos problemas de rendimiento en el código.
