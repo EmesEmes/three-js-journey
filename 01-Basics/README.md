@@ -63,3 +63,83 @@ camera.position.z = 3
 > Un canvas es un elemento HTML que se utiliza como un lienzo en el cual se pueden dibujar gráficos mediante programación, usando JavaScript. Es parte de HTML5 y permite la renderización de gráficos 2D y, con la ayuda de bibliotecas adicionales como WebGL, también se pueden renderizar gráficos 3D.
 
 ## Tranformar un objeto 
+Para mover un objeto podemos utilizar su posición, escale, rotación y el cuaternio. Se puede modificar estos valores ya sea de la cámara, del mesh o de cualquier objeto que herede del `Object3D` por ejemplo: PerspectiveCamera.
+```javascript
+mesh.position.x = 0.7
+mesh.position.y = - 0.6
+mesh.position.z = 1
+```
+### position
+Se puede cambiar la posición también utilizando el objeto `Vector3` u otros que contienen métodos útiles. La propiedad `position` también hereda de Vector3.
+
+Se puede actualizar las tres posiciones al mismo tiempo utilizando el método `set`.
+```javascrip
+mesh.position.set(0.7, -0.6, 1)
+```
+
+Posicionar objetos en el espacio puede ser difícil, pero se puede utilizar `AxesHelper` para agregar líneas en los ejes, el Eje X es de color rojo, el eje Y es de color verde y el eje Z es de color azul.
+```javascript 
+const axesHelper = new THREE.AxesHelper(3)
+scene.add(axesHelper)
+```
+
+### escale
+En Three.js, la propiedad scale se refiere a la escala de un objeto en el espacio 3D. Esta propiedad permite modificar el tamaño de un objeto en cualquiera de los tres ejes (x, y, z) de manera independiente. Al igual que position y rotation, scale es una instancia de Vector3, lo que significa que tiene tres componentes: x, y, y z, que representan la escala del objeto en cada uno de esos
+
+Modificar la escala de un objeto puede hacer que parezca más grande o más pequeño sin cambiar sus proporciones originales, a menos que se escale de manera no uniforme (diferente valor en cada eje). Por ejemplo, si se establece la escala de un objeto a (2, 2, 2), el objeto será dos veces más grande en cada dimensión que su tamaño original.
+
+```javascript
+mesh.scale.x = 2
+mesh.scale.y = 0.5
+mesh.scale.z = 0.5
+```
+
+También se puede usar los métodos heredados de Vector3.
+```javascript
+mesh.scale.set(2, 0.5, 0.5)
+```
+
+### rotation
+En Three.js, rotate se refiere a la operación de rotar un objeto en el espacio 3D. Cada objeto que hereda de Object3D, incluyendo cámaras, luces y mallas (meshes), tiene propiedades y métodos que permiten controlar su rotación. La rotación puede ser especificada en términos de ángulos de Euler (usando las propiedades rotation.x, rotation.y, rotation.z para los ejes X, Y y Z, respectivamente) o mediante cuaterniones para una representación más compleja y libre de problemas como el bloqueo de cardán (gimbal lock).
+
+Para modificar la rotación de un objeto, puedes ajustar directamente las propiedades de rotation o utilizar métodos como rotateX(), rotateY(), y rotateZ(), que rotan el objeto alrededor de los ejes X, Y y Z respectivamente, por un ángulo especificado en radianes.
+
+Se puede utilizar la propiedad `rotation` o también la propiedad `quaternion`. Actualizar cualquiera de las propiedades lo hará también a la otra.
+```javascript 
+mesh.rotation.x = Math.PI * 0.25
+mesh.rotation.y = Math.PI * 0.25
+```
+
+Instancias de Object#d tienen el método `lookAt(...)` que es utilizado para orientar un objeto hacia otro punto en el espacio 3D. Este método ajusta la orientación del objeto de tal manera que su eje local -Z apunta hacia el objetivo especificado. Es comúnmente usado para cámaras, permitiendo que la cámara "mire" hacia un objeto o una posición específica, pero también puede ser usado con cualquier tipo de objeto que herede de Object3D.
+
+
+### Quaternion/Cuaternión
+Un cuaternión, en el contexto de gráficos 3D y Three.js, es una forma de representar rotaciones que evita algunos de los problemas asociados con los ángulos de Euler, como el bloqueo de cardán (gimbal lock). Un cuaternión se compone de cuatro componentes: uno real y tres imaginarios, y se utiliza para representar una rotación alrededor de un eje en el espacio tridimensional.
+
+Los cuaterniones son útiles en animaciones y rotaciones complejas porque proporcionan una interpolación suave entre orientaciones (conocida como interpolación esférica o slerp) y no sufren el problema del bloqueo de cardán.
+
+En Three.js, puedes usar cuaterniones para controlar la rotación de objetos de la siguiente manera:
+
+1. Directamente a través de la propiedad quaternion de un objeto: Cada objeto en Three.js que puede ser rotado tiene una propiedad quaternion que representa su orientación actual en el espacio. Puedes ajustar esta propiedad directamente para cambiar la orientación del objeto.
+
+2. Usando métodos para establecer la rotación: Three.js ofrece métodos como setRotationFromQuaternion(quaternion) que te permiten definir la rotación de un objeto a partir de un cuaternión.
+
+3. Interpolación entre cuaterniones: Puedes usar cuaterniones para crear animaciones suaves rotando un objeto desde una orientación inicial a una final. Three.js proporciona métodos como Quaternion.slerp(quaternionStart, quaternionEnd, t) para realizar esta interpolación.
+
+> Se puede poner diferentes objetos en un grupo y así escalarlos, rotarlos y posicionarlos a todos los objetos a la vez, un grupo hereda de la clase Object3D.
+```javascript
+const group = new THREE.Group()
+scene.add(group)
+
+const cube1 = new THREE.Mesh(
+    new THREE.BoxGeometry(1, 1, 1),
+    new THREE.MeshBasicMaterial({ color: 0xff0000})
+)
+group.add(cube1)
+
+const cube2 = new THREE.Mesh(
+    new THREE.BoxGeometry(1, 1, 1),
+    new THREE.MeshBasicMaterial({ color: 0x00ff00 })
+)
+group.add(cube2)
+```
