@@ -162,10 +162,99 @@ En Three.js, las animaciones pueden ser implementadas de varias maneras:
 ### Frames
 En el contexto de Three.js y la programación de gráficos 3D en general, un "frame" se refiere a un único cuadro o imagen en una secuencia de animación o visualización. Cada frame representa el estado visual de la escena en un momento específico. Cuando se renderizan múltiples frames en rápida sucesión, se crea la ilusión de movimiento o animación.
 
-Three.js utiliza un bucle de animación, comúnmente implementado con la función requestAnimationFrame, para actualizar y renderizar la escena repetidamente a una alta tasa de frames por segundo (FPS). Esto permite animaciones fluidas y la interactividad en tiempo real. En cada iteración del bucle de animación (es decir, en cada frame), se pueden realizar cambios en la escena, como mover objetos, cambiar colores, aplicar transformaciones, y luego renderizar la escena actualizada
+Three.js utiliza un bucle de animación, comúnmente implementado con la función `requestAnimationFrame`, para actualizar y renderizar la escena repetidamente a una alta tasa de frames por segundo (FPS). Esto permite animaciones fluidas y la interactividad en tiempo real. En cada iteración del bucle de animación (es decir, en cada frame), se pueden realizar cambios en la escena, como mover objetos, cambiar colores, aplicar transformaciones, y luego renderizar la escena actualizada
 
 > La mayoria de las pantallas corren a 60 frames por segundo(FPS). Pero hay computadoras que pueden correr a una mayor tasa de frames.
 
 > Las animaciones deben verse igual en distintos dispositivos independientemente de la tasa de frames. 
 
 > Si hay una tasa baja de frames puede significar que tenemos problemas de rendimiento en el código.
+
+### Animar utilizando requestAnimationFrame()
+requestAnimationFrame es una función de JavaScript que le dice al navegador que quieres realizar una animación y solicita que el navegador programe el repintado de la ventana para el próximo ciclo de animación. La función toma como argumento otra función a la que llamar antes de realizar el repintado. requestAnimationFrame es parte de la Web API y es utilizada en Three.js y otras bibliotecas de gráficos para crear animaciones suaves y eficientes.
+
+En el contexto de Three.js, requestAnimationFrame se utiliza para crear un bucle de animación que actualiza y renderiza la escena a una tasa óptima para el navegador. Esto es crucial para animaciones 3D, ya que asegura que la escena se actualice de manera eficiente y en sincronía con la tasa de refresco del dispositivo, proporcionando una experiencia de usuario fluida.
+```javascript
+const tick = () => {
+  // Update Objects
+  mesh.rotation.x += 0.01
+
+  // Render
+  renderer.render(scene, camera)
+
+  window.requestAnimationFrame(tick)
+}
+
+tick()
+```
+
+Para poder lograr que las animaciones se vean igual en varios dispositivos sin que importe la tasa de refresco que estos tengan, debemos saber cuanto tiempo a pasado desde el último `tick`, para esto podemos utilizar `Date.now` para obtener la `marca de tiempo(timestamp)` actual. La marca de tiempo es cuantos milisegundo han pasado desde el 1 de enero de 1970 por lo que es una medida de tiempo única.
+
+```javascript
+// Time
+let time = Date.now()
+
+// Animations
+const tick = () => {
+  // Time
+  const CurrentTime = Date.now()
+  const deltaTime = CurrentTime - time
+  time = CurrentTime
+  
+
+  // Update Objects
+  mesh.rotation.x += 0.002 * deltaTime
+
+  // Render
+  renderer.render(scene, camera)
+
+  window.requestAnimationFrame(tick)
+}
+
+tick()
+```
+
+### Animar utilizando Clock
+En Three.js, Clock es una clase que facilita el seguimiento del tiempo transcurrido. Se utiliza comúnmente para gestionar y sincronizar animaciones o cualquier otra operación que dependa del tiempo. Un objeto Clock puede medir el tiempo transcurrido desde su creación o desde la última vez que se llamó a su método .getDelta(), que devuelve el tiempo en segundos (no milisegundos, como Date.now()) desde la última vez que se invocó dicho método.
+
+```javascript
+// Clock
+const clock = new THREE.Clock()
+
+// Animations
+const tick = () => {
+  // Clock
+  const elapsedTime = clock.getElapsedTime()  
+
+  // Update Objects
+  mesh.position.y = Math.sin(elapsedTime)
+  mesh.position.x = Math.cos(elapsedTime)
+
+  // Render
+  renderer.render(scene, camera)
+
+  window.requestAnimationFrame(tick)
+}
+
+tick()
+```
+
+### Animar utilizando una librería
+Para utilizar librerías externas para animar en Three.js, una opción popular es GSAP (GreenSock Animation Platform). GSAP es una potente biblioteca de animación que puede animar cualquier propiedad numérica de JavaScript, lo que la hace ideal para su uso con Three.js para animaciones complejas y de alto rendimiento.
+
+`npm install gsap`
+```javascript
+import gsap from 'gsap'
+
+gsap.to(mesh.position, {
+  duration: 1,
+  delay: 1,
+  x: 2
+})
+gsap.to(mesh.position, {
+  duration: 1,
+  delay: 2,
+  x: 0
+})
+```
+
