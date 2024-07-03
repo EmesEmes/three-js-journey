@@ -391,3 +391,60 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 ```javascript
 const controls = new OrbitControls(camera, canvas)
 ```
+
+
+## Geometries/Geometrías
+En Three.js, una geometría es una estructura de datos que contiene toda la información necesaria para describir la forma de un objeto 3D. Esto incluye, principalmente, los vértices (puntos en el espacio) y las caras (polígonos que conectan estos puntos) que definen la superficie del objeto. Además, la geometría puede incluir información adicional como las normales (vectores perpendiculares a las caras que ayudan a determinar cómo interactúa la superficie con la luz), colores de vértices, y coordenadas de mapeo de texturas (que permiten aplicar imágenes a las superficies de los objetos para darles detalle y realismo).
+
+Three.js ofrece varias clases de geometrías predefinidas, como BoxGeometry (para crear cubos o paralelepípedos), SphereGeometry (para esferas), CylinderGeometry (para cilindros), entre otras, facilitando la creación de formas comunes. También es posible definir geometrías personalizadas especificando manualmente los vértices y las caras.
+
+### BufferGeometry
+BufferGeometry en Three.js es una clase que representa una geometría de manera más eficiente en comparación con la clase Geometry tradicional. Mientras que Geometry almacena los datos de los vértices, las caras, y otros atributos de forma estructurada y fácil de entender y manipular en JavaScript, BufferGeometry organiza estos datos en buffers o arreglos planos. Esto permite una transferencia más directa y rápida de los datos a la GPU para su procesamiento, lo que resulta en un rendimiento significativamente mejorado, especialmente en escenas complejas o con un gran número de objetos.
+
+La clase BufferGeometry es especialmente útil para aplicaciones que requieren una alta eficiencia en la renderización de gráficos 3D, como juegos, visualizaciones de datos complejas, y simulaciones. Permite un control detallado sobre los atributos de los vértices, incluyendo posición, color, normales, coordenadas de textura, y más, todo mientras mantiene la memoria y el procesamiento al mínimo.
+
+```javascript
+// Crear una instancia de BufferGeometry
+const geometry = new THREE.BufferGeometry();
+
+// Crear un arreglo de puntos (vértices) para la geometría
+const vertices = new Float32Array([
+  -1.0, -1.0,  1.0,
+   1.0, -1.0,  1.0,
+   1.0,  1.0,  1.0,
+]);
+
+// Crear un buffer de atributo para los vértices y añadirlo a la geometría
+geometry.setAttribute('position', new THREE.BufferAttribute(vertices, 3));
+
+// Crear un material
+const material = new THREE.MeshBasicMaterial({color: 0xff0000});
+
+// Crear un mesh usando la geometría y el material
+const mesh = new THREE.Mesh(geometry, material);
+
+// Añadir el mesh a la escena
+scene.add(mesh);
+```
+
+### Geometrías incorporadas/built-in
+Las geometrías incorporadas en la API de Three.js son clases predefinidas que facilitan la creación de formas comunes en 3D. A continuación, se enumeran algunas de las más utilizadas:
+* BoxGeometry: Para crear cubos o paralelepípedos.
+* CircleGeometry: Para crear círculos o discos.
+* ConeGeometry: Para crear conos.
+* CylinderGeometry: Para crear cilindros.
+* DodecahedronGeometry: Para crear dodecaedros (poliedros de 12 caras).
+* EdgesGeometry: Para crear un conjunto de líneas que representan los bordes de una geometría.
+* ExtrudeGeometry: Para extruir una forma a lo largo de un camino, creando una geometría 3D.
+* IcosahedronGeometry: Para crear icosaedros (poliedros de 20 caras).
+* LatheGeometry: Para generar geometrías rotando un conjunto de puntos alrededor de un eje.
+* OctahedronGeometry: Para crear octaedros (poliedros de 8 caras).
+* PlaneGeometry: Para crear planos o superficies rectangulares.
+* RingGeometry: Para crear anillos o discos con un agujero en el centro.
+* SphereGeometry: Para crear esferas o bolas.
+* TetrahedronGeometry: Para crear tetraedros (poliedros de 4 caras).
+* TorusGeometry: Para crear toroides (forma de dona).
+* TorusKnotGeometry: Para crear nudos toroidales, que son toroides con un patrón de trenzado complejo.
+* TubeGeometry: Para crear tubos o cilindros con una trayectoria curva.
+* WireframeGeometry: Para crear una geometría de alambre a partir de otra geometría, mostrando solo los bordes.
+* TextGeometry permite crear geometrías 3D a partir de texto, lo que es útil para añadir etiquetas, títulos, o cualquier otro texto en 3D a tus escenas.
