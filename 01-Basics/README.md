@@ -258,3 +258,136 @@ gsap.to(mesh.position, {
 })
 ```
 
+## Cámara/Camera
+En Three.js, una camera (cámara) es un objeto que determina qué parte de la escena se renderiza en el lienzo (canvas). Es esencialmente el punto de vista desde el cual el usuario ve la escena. Three.js ofrece varios tipos de cámaras, pero los más comunes son PerspectiveCamera y OrthographicCamera.
+
+Es una clase abstracta por lo que no la utilizamos directamente ya que PerspectiveCamera y las demás heredan desde esta clase.
+
+### ArrayCamera
+La ArrayCamera en Three.js es una cámara especial que permite renderizar múltiples vistas de una escena en un solo pase de renderizado. Se compone de un arreglo de cámaras (PerspectiveCamera o OrthographicCamera), cada una configurada para renderizar una parte específica de la escena. Esto es particularmente útil para aplicaciones como la realidad virtual (VR), donde se necesita renderizar una vista para cada ojo, o para crear efectos de visualización complejos como paneles de visualización múltiple dentro de una misma escena.
+
+La ArrayCamera funciona al asignar a cada cámara del arreglo una porción del lienzo de renderizado. Por ejemplo, en una configuración de realidad virtual, podrías tener dos PerspectiveCamera dentro de tu ArrayCamera, cada una configurada para renderizar a la mitad del lienzo, una para el ojo izquierdo y otra para el ojo derecho, creando así una experiencia inmersiva.
+
+### StereoCamera
+La StereoCamera en Three.js es una cámara especializada que se utiliza para crear efectos de visión estereoscópica, simulando la forma en que los ojos humanos perciben el mundo en tres dimensiones. Esto es especialmente útil en aplicaciones de realidad virtual (VR) o en cualquier experiencia que busque aumentar la sensación de profundidad y espacio en 3D.
+
+A diferencia de la ArrayCamera, que puede contener múltiples cámaras para diferentes propósitos, la StereoCamera está específicamente diseñada para trabajar en pares, generando dos perspectivas ligeramente desplazadas de la misma escena, una para cada ojo. Este desplazamiento imita la separación entre los ojos humanos y crea un efecto de paralaje que el cerebro interpreta como profundidad, resultando en una experiencia 3D convincente.
+
+La StereoCamera en Three.js automáticamente calcula y ajusta las vistas para el ojo izquierdo y derecho basándose en una cámara principal. Esto simplifica el proceso de renderizado estereoscópico, ya que el desarrollador solo necesita preocuparse por la configuración de la cámara principal, y StereoCamera se encarga de generar las dos vistas necesarias para la experiencia estereoscópica.
+
+### CubeCamera
+La CubeCamera es un tipo de cámara en Three.js que se utiliza para crear mapas de entorno (environment maps) en forma de cubo alrededor de un punto en el espacio. Estos mapas de entorno se pueden utilizar para efectos de reflexión o refracción en materiales, permitiendo que los objetos en la escena reflejen su entorno de manera realista.
+
+a CubeCamera funciona generando seis renderizados internos para cada una de las seis direcciones (arriba, abajo, izquierda, derecha, adelante, atrás) desde un punto en el espacio, creando así un mapa de entorno cúbico. Este mapa se puede aplicar luego a materiales que soporten reflexiones o refracciones, como MeshStandardMaterial o MeshPhysicalMaterial, para simular superficies reflectantes o transparentes como vidrio o agua.
+
+### OrthographicCamera
+La OrthographicCamera en Three.js es un tipo de cámara que utiliza una proyección ortográfica para renderizar la escena. A diferencia de la PerspectiveCamera, que simula la forma en que el ojo humano percibe el mundo con objetos más distantes que aparecen más pequeños, la OrthographicCamera renderiza todos los objetos con el mismo tamaño, sin importar su distancia a la cámara. Esto significa que no hay perspectiva en la imagen resultante, lo que puede ser útil para ciertos tipos de juegos (como juegos de estrategia en tiempo real o plataformas 2D), visualizaciones arquitectónicas, o cualquier aplicación donde se desee este efecto específico.
+
+Para crear una OrthographicCamera en Three.js, necesitas especificar los límites del frustum de la cámara en el espacio de la escena: izquierda, derecha, arriba, abajo, cerca y lejos. Estos límites definen una caja dentro de la cual todo será renderizado con el mismo tamaño.
+
+La proyección ortográfica es especialmente útil para:
+1. Representaciones técnicas o arquitectónicas donde se requiere precisión en las dimensiones y proporciones.
+2. Juegos o escenas donde se desea mantener el mismo tamaño de los objetos, independientemente de su distancia a la cámara.
+3. UIs o HUDs donde se necesitan elementos gráficos que no se distorsionen con la perspectiva.
+
+```javascript
+const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 1000)
+```
+
+### PerspectiveCamera
+La PerspectiveCamera en Three.js es un tipo de cámara que simula la perspectiva tal como la ve el ojo humano, donde los objetos más cercanos aparecen más grandes y los más lejanos más pequeños. Esta cámara utiliza una proyección en perspectiva, que es la forma más común de proyección utilizada en la mayoría de los juegos y aplicaciones 3D para crear una sensación de profundidad y realismo.
+
+La PerspectiveCamera se define principalmente por dos parámetros: el campo de visión (fov, que es el ángulo de visión en grados en la dirección vertical) y la relación de aspecto (aspect, que es la relación entre el ancho y el alto del lienzo de renderizado). Además, se especifican los planos near y far, que determinan los límites del espacio que la cámara puede ver. Solo los objetos que se encuentran dentro de este espacio serán renderizados.
+
+```javascript
+const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 1, 1000)
+```
+1. El primer parámetro que acepta es `campo de visión/field of view` (75), está escrito en grados y es el ángulo de visión vertical, también se le conoce como `fov`.
+2. El segundo parámetro es `relación de aspecto/aspect ratio` que es el ancho del render dividido por el alto (sizes.width / sizes.height).
+3. El tercer parámetro que toma es `near` (1). Este parámetro define el plano cercano (near clipping plane) del frustum de la cámara. En otras palabras, es la distancia mínima a la que la cámara puede ver objetos. Todo objeto que esté más cerca de la cámara que este valor no será renderizado o visible en la escena. El propósito de este parámetro es ayudar a definir el volumen de visión de la cámara, lo cual es crucial para el rendimiento y la calidad visual de la aplicación 3D. 
+4. El cuarto parámetro es `far` (1000). Este parámetro define el plano lejano (far clipping plane) del frustum de la cámara. Es la distancia máxima a la que la cámara puede ver objetos. Todo objeto que esté más lejos de la cámara que este valor no será renderizado o visible en la escena. El propósito de este parámetro es limitar la profundidad de la escena que se debe renderizar, lo cual es importante tanto para el rendimiento como para la calidad visual. Al no renderizar objetos que están demasiado lejos para ser vistos claramente, se puede ahorrar en recursos de computación y evitar el uso innecesario de memoria y tiempo de procesamiento. 
+
+> Al ajustar adecuadamente los planos cercano y lejano (near y far), se puede optimizar el uso del buffer de profundidad, minimizando problemas de precisión y maximizando También ayuda reduciendo artefactos visuales como el z-fighting (cuando dos o más objetos compiten por el mismo píxel en el buffer de profundidad).
+
+### Mover la cámara con el mouse
+Primero debemos obtener las coordenadas del mouse.
+
+```javascript
+const cursor = {
+    x: 0,
+    y: 0
+} 
+window.addEventListener('mousemove', (event) => {
+    cursor.x = event.clientX / sizes.width - 0.5
+    cursor.y = event.clientY / sizes.height -0.5
+})
+```
+
+Dentro de la función `thick` actualizamos la posición de la camára con las coordenadas del cursor.
+```javascript 
+// Update camera
+camera.position.x = Math.sin(cursor.x * Math.PI * 2) * 2
+camera.position.y = cursor.y * 5
+camera.position.z = Math.cos(cursor.x * Math.PI * 2) * 2
+camera.lookAt(mesh.position)
+```
+
+### built-in controls
+Three.js tiene integradas multiples clases llamadas controles que nos ayudan a mover la cámara.
+
+#### FlyControls
+FlyControls es una de las varias clases de controles integradas en Three.js que permite al usuario mover la cámara libremente por la escena, como si estuviera volando. Esto se logra mediante el uso del teclado y/o el mouse para controlar la dirección y velocidad de la cámara. FlyControls ofrece una forma interactiva y versátil de explorar escenas 3D desde diferentes ángulos y posiciones, lo que puede ser especialmente útil en aplicaciones como simuladores, juegos, o visualizaciones arquitectónicas.
+
+Para utilizar FlyControls, primero se debe incluirlos en el proyecto, ya que pueden no estar incluidos en el build principal de Three.js. Luego, se puede instanciar FlyControls pasando la cámara que se desea controlar y el elemento DOM (usualmente el canvas) sobre el cual se renderiza la escena.
+
+#### FirstPersonControls
+FirstPersonControls es otra clase de controles integrada en Three.js diseñada para permitir al usuario navegar por una escena 3D desde una perspectiva en primera persona. Al igual que FlyControls, FirstPersonControls permite al usuario mover la cámara, pero de una manera que simula el movimiento de caminar o correr por el entorno virtual, manteniendo la cámara a una altura constante y permitiendo girar la vista en horizontal y vertical para mirar alrededor.
+
+Este tipo de controles es ideal para aplicaciones como juegos en primera persona, simulaciones de caminata, o cualquier entorno virtual donde se desee dar al usuario la sensación de estar "dentro" de la escena, moviéndose como si estuvieran caminando o corriendo.
+
+Para usar FirstPersonControls en Three.js, primero se debe asegurar de que la clase esté incluida en el proyecto. Luego, se puede instanciar FirstPersonControls pasando la cámara que se desea controlar y, opcionalmente, el elemento DOM (usualmente el canvas) sobre el cual se renderiza la escena. Después de instanciar, se puede configurar varias propiedades para personalizar el comportamiento de los controles, como la velocidad de movimiento y la sensibilidad de la rotación.
+
+#### PointerLockControls
+PointerLockControls es una clase de controles integrada en Three.js diseñada para facilitar la creación de experiencias de navegación en primera persona en una escena 3D, de manera similar a FirstPersonControls. La principal diferencia y ventaja de PointerLockControls es que captura y bloquea el cursor del mouse dentro de la ventana del navegador, permitiendo una experiencia de usuario más inmersiva y controlada. Esto es especialmente útil en juegos en primera persona o simulaciones donde se desea que el usuario tenga un control total sobre la cámara sin la distracción o limitación del movimiento del cursor fuera de la ventana del juego o aplicación.
+
+Cuando se activa el bloqueo del puntero, los movimientos del mouse mueven directamente la cámara en la escena, sin mostrar el cursor del mouse, lo que permite un control más fluido y natural de la vista en primera persona. El usuario puede mirar alrededor en todas las direcciones girando el mouse, y esta funcionalidad se combina comúnmente con el teclado para moverse dentro de la escena.
+
+Para utilizar PointerLockControls en Three.js, primero se debe asegurar de que la clase esté incluida en el proyecto. Luego, se instancian los controles pasando la cámara que se desea controlar. Es importante manejar también la lógica para solicitar al usuario que permita el bloqueo del puntero al hacer clic en la ventana o presionar una tecla específica, ya que esta acción requiere una interacción del usuario por razones de seguridad y usabilidad.
+
+#### TrackballControls
+TrackballControls es una clase de controles en Three.js que permite al usuario interactuar con la escena 3D de una manera similar a como lo haría con un trackball físico. Esto significa que el usuario puede rotar la escena alrededor de un punto de interés, acercar (zoom) y alejar la vista, y panear (mover la vista lateralmente) utilizando el mouse o gestos táctiles. La principal diferencia entre TrackballControls y otros controles como OrbitControls es la forma en que se maneja la rotación; TrackballControls ofrece una experiencia más libre, permitiendo rotaciones en cualquier dirección, como si estuvieras girando un objeto en tus manos.
+
+Para utilizar TrackballControls en Three.js, primero se debe asegurar de que la clase esté incluida en el proyecto, ya que puede no estar incluida en el build principal de Three.js. Luego, se instancian los controles pasando la cámara que se desea controlar y el elemento DOM (usualmente el canvas) sobre el cual se renderiza la escena. Después de instanciar, se pueden configurar varias propiedades para personalizar el comportamiento de los controles, como la sensibilidad del zoom, la velocidad de rotación, y si el pan debe ser permitido.
+
+#### TransformControls
+TransformControls es una clase de controles en Three.js que permite al usuario interactuar con objetos dentro de la escena 3D de manera que pueda trasladarlos (moverlos), rotarlos y escalarlos de forma intuitiva. Esta clase es especialmente útil en aplicaciones de edición o diseño 3D, donde se requiere que el usuario tenga la capacidad de manipular objetos directamente dentro de la escena.
+
+Para utilizar TransformControls en Three.js, se deben seguir estos pasos básicos:
+1. Asegurarse de que la clase TransformControls esté incluida en el proyecto.
+2. Instanciar TransformControls pasando la cámara que se está utilizando y el elemento DOM (usualmente el canvas) sobre el cual se renderiza la escena.
+3. Agregar TransformControls a la escena.
+4. Asociar TransformControls con el objeto que se desea manipular. Esto se hace mediante el método attach(object), donde object es el objeto 3D que se quiere manipular.
+5. Escuchar eventos de control para actualizar la escena cuando el usuario interactúe con el objeto. Esto es necesario para que los cambios se reflejen en tiempo real.
+
+#### DragControls
+DragControls es una clase de controles en Three.js que permite al usuario interactuar con objetos dentro de la escena 3D arrastrándolos con el mouse. Esta funcionalidad es útil en aplicaciones donde se requiere que el usuario tenga la capacidad de reposicionar objetos en la escena de manera intuitiva, como en aplicaciones de diseño, juegos de estrategia, o interfaces de usuario donde la manipulación directa de objetos es necesaria.
+
+Para utilizar DragControls en Three.js, se deben seguir estos pasos básicos:
+1. Incluir la clase DragControls en el proyecto: Asegurarse de que DragControls esté disponible, ya que puede no estar incluido en el build principal de Three.js.
+2. Instanciar DragControls: Crear una nueva instancia de DragControls, pasando un arreglo de objetos que se desean hacer arrastrables, la cámara que se está utilizando, y el elemento DOM (usualmente el canvas) sobre el cual se renderiza la escena.
+3. Configurar eventos: DragControls emite varios eventos como dragstart, drag, y dragend, que se pueden utilizar para ejecutar lógica específica durante el inicio del arrastre, mientras se arrastra, y cuando se termina de arrastrar un objeto, respectivamente.
+
+#### OrbitControls
+OrbitControls es una clase de controles en Three.js que permite al usuario rotar, acercar (zoom) y alejar la vista alrededor de un punto de interés, generalmente el centro de la escena, mediante el uso del mouse o gestos táctiles. Esta clase es ampliamente utilizada en aplicaciones de visualización 3D, como visualizadores de modelos, aplicaciones educativas, y cualquier entorno donde se desee inspeccionar objetos desde diferentes ángulos sin cambiar la posición de la cámara en el espacio.
+
+Para utilizar OrbitControls, primero se debe incluir en el proyecto, ya que puede no estar incluido en el build principal de Three.js. Luego, se instancian los controles pasando la cámara que se desea controlar y el elemento DOM (usualmente el canvas) sobre el cual se renderiza la escena.
+
+* Importar OrbitControls
+```javascript
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
+```
+
+* Instanciar OrbitControls
+```javascript
+const controls = new OrbitControls(camera, canvas)
+```
