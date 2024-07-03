@@ -403,6 +403,8 @@ BufferGeometry en Three.js es una clase que representa una geometría de manera 
 
 La clase BufferGeometry es especialmente útil para aplicaciones que requieren una alta eficiencia en la renderización de gráficos 3D, como juegos, visualizaciones de datos complejas, y simulaciones. Permite un control detallado sobre los atributos de los vértices, incluyendo posición, color, normales, coordenadas de textura, y más, todo mientras mantiene la memoria y el procesamiento al mínimo.
 
+> Para utilizarlo se necesita utilizar `Float32Array` que es un array tipado, que solo almacena valores flotantes, tiene la longitud fijada y es más fácil de manejar para el computador.
+
 ```javascript
 // Crear una instancia de BufferGeometry
 const geometry = new THREE.BufferGeometry();
