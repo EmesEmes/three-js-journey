@@ -450,3 +450,14 @@ Las geometrías incorporadas en la API de Three.js son clases predefinidas que f
 * TubeGeometry: Para crear tubos o cilindros con una trayectoria curva.
 * WireframeGeometry: Para crear una geometría de alambre a partir de otra geometría, mostrando solo los bordes.
 * TextGeometry permite crear geometrías 3D a partir de texto, lo que es útil para añadir etiquetas, títulos, o cualquier otro texto en 3D a tus escenas.
+
+
+## Debug UI
+En Three.js, un "debug UI" (Interfaz de Usuario para Depuración) no es un concepto o componente integrado directamente en la biblioteca. Sin embargo, el término se refiere comúnmente a herramientas o interfaces gráficas que permiten a los desarrolladores ajustar y experimentar con los parámetros de su escena 3D en tiempo real para facilitar la depuración y el desarrollo. Estas interfaces suelen permitir modificar propiedades de objetos, luces, cámaras, materiales, entre otros, sin necesidad de cambiar el código y recargar la página.
+
+Una herramienta popular para crear un debug UI en proyectos Three.js (y en desarrollo web en general) es dat.GUI. dat.GUI es una biblioteca ligera que proporciona una interfaz gráfica simple para cambiar variables en tiempo real. Se utiliza ampliamente en proyectos de gráficos por computadora, visualización de datos, y juegos para ajustar parámetros y ver cómo afectan a la escena de manera inmediata.
+
+### lil-gui
+lil-gui es una biblioteca de interfaz de usuario ligera para desarrolladores y artistas, que sirve como una alternativa o sucesor a dat.GUI. Al igual que dat.GUI, lil-gui se utiliza para crear paneles de control interactivos en aplicaciones web, lo que permite a los usuarios ajustar y manipular variables en tiempo real. Esto es especialmente útil en el desarrollo de gráficos por computadora, juegos, visualización de datos, y cualquier proyecto interactivo donde se necesite experimentar con parámetros y ver los resultados inmediatamente.
+
+lil-gui ofrece una API sencilla para agregar controles como deslizadores, selectores de color, botones y otros elementos interactivos que pueden vincularse a las variables de tu código. Estos controles permiten modificar propiedades de objetos, ajustes de escena, colores, etc., sin tener que recargar la página o cambiar el código fuente manualmente.
