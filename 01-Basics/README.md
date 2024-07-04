@@ -461,3 +461,49 @@ Una herramienta popular para crear un debug UI en proyectos Three.js (y en desar
 lil-gui es una biblioteca de interfaz de usuario ligera para desarrolladores y artistas, que sirve como una alternativa o sucesor a dat.GUI. Al igual que dat.GUI, lil-gui se utiliza para crear paneles de control interactivos en aplicaciones web, lo que permite a los usuarios ajustar y manipular variables en tiempo real. Esto es especialmente útil en el desarrollo de gráficos por computadora, juegos, visualización de datos, y cualquier proyecto interactivo donde se necesite experimentar con parámetros y ver los resultados inmediatamente.
 
 lil-gui ofrece una API sencilla para agregar controles como deslizadores, selectores de color, botones y otros elementos interactivos que pueden vincularse a las variables de tu código. Estos controles permiten modificar propiedades de objetos, ajustes de escena, colores, etc., sin tener que recargar la página o cambiar el código fuente manualmente.
+
+Instanciar lil-gui
+`npm install lil-gui`
+
+
+
+```javascript 
+// Crear una nueva instancia de GUI
+const gui = new lil.GUI();
+
+// Objeto para los parámetros que quieres ajustar
+const parameters = {
+    color: '#ff0000', // Color inicial en formato hexadecimal
+    rotate: function() { // Función para rotar el objeto
+        // Código para rotar el objeto
+    }
+};
+
+// Añadir un control de color
+gui.addColor(parameters, 'color').onChange(function(value) {
+    // Código para cambiar el color del objeto, por ejemplo
+    // objeto.material.color.set(value);
+});
+
+// Añadir un botón para ejecutar una acción (en este caso, rotar el objeto)
+gui.add(parameters, 'rotate').name('Rotar Objeto');
+```
+
+#### Tweaks/Ajustes
+Los "tweaks" o ajustes en el contexto de lil-gui se refieren a las modificaciones o ajustes interactivos que se pueden realizar en tiempo real sobre las variables de un proyecto. Estos ajustes permiten a los desarrolladores y diseñadores experimentar con diferentes valores para propiedades de objetos, configuraciones de escena, colores, y otros parámetros sin necesidad de editar el código fuente y recargar la aplicación.
+
+En lil-gui, los tweaks se realizan a través de controles visuales como deslizadores (sliders), selectores de color, botones, y campos de texto, que se vinculan directamente a las variables en el código. Al interactuar con estos controles, los valores de las variables asociadas se actualizan automáticamente, permitiendo ver los efectos de estos cambios en tiempo real. Esto facilita la experimentación y el ajuste fino de los parámetros, haciendo el proceso de desarrollo más interactivo y eficiente.
+
+Por ejemplo, si tienes un objeto en una escena 3D y deseas ajustar su color, en lugar de cambiar el código y recargar la página cada vez, puedes usar lil-gui para crear un selector de color vinculado a la propiedad de color del objeto. Al ajustar el color a través de la interfaz de lil-gui, puedes ver el cambio inmediatamente en la escena sin interrumpir tu flujo de trabajo.
+
+Los tweaks son especialmente útiles en el desarrollo de gráficos por computadora, visualización de datos, y juegos, donde la capacidad de ajustar y optimizar visualmente los parámetros puede mejorar significativamente la calidad y la eficiencia del desarrollo.
+
+Tipos de tweaks:
+* Rango/Range: Para números con un valor mínimo y máximo.
+* Color: Para colores en varios formatos.
+* Texto: Para textos simples.
+* Checkbox: Para valores booleanos.
+* Select: Para escoger entre una lista de valores.
+* Button: Para ejecutar/disparar funciones.
+
+> Los tweaks funcionan sobre las propiedades de un objeto ejm: posición, color.
