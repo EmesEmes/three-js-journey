@@ -507,3 +507,23 @@ Tipos de tweaks:
 * Button: Para ejecutar/disparar funciones.
 
 > Los tweaks funcionan sobre las propiedades de un objeto ejm: posición, color.
+
+## Texturas/Textures
+Las texturas en Three.js son imágenes o patrones aplicados a las superficies de los objetos 3D para darles detalle, realismo y apariencia visual más compleja. En Three.js, las texturas se utilizan junto con materiales para definir cómo se ve la superficie de un objeto bajo diferentes condiciones de iluminación. Las texturas pueden representar características como el color, el brillo, el relieve (a través de mapas de normales o bump maps), la transparencia, entre otros efectos.
+
+En Three.js, hay varios tipos de texturas que se pueden utilizar para diferentes propósitos y efectos en los objetos 3D. Cada tipo de textura tiene un propósito específico y se aplica a diferentes aspectos de la apariencia de un objeto. Aquí hay una lista de los tipos de texturas más comunes:
+
+1. Mapa de Difusión (Diffuse Map o Color Map): Define el color básico o la imagen de un material. Es la textura más comúnmente usada para dar detalle a la superficie de un objeto.
+2. Mapa de Normales (Normal Map): Simula pequeños detalles de relieve en la superficie de un objeto sin necesidad de aumentar la complejidad geométrica. Modifica la dirección de las normales de la superficie basándose en los colores de la textura.
+3. Mapa de Desplazamiento (Displacement Map): Altera la posición de los vértices de la malla en la dirección de sus normales, basándose en los valores de la textura. Esto puede añadir verdadero relieve y profundidad a un objeto, a diferencia del normal map que solo simula estos detalles visualmente.
+4. Mapa de Especularidad (Specular Map): Define qué partes de la superficie son más brillantes o reflectantes. Se utiliza para simular materiales con variaciones en la reflectividad, como metales o superficies húmedas.
+5. Mapa de Oclusión Ambiental (Ambient Occlusion Map): Simula cómo la luz ambiental se oscurece en las grietas y hendiduras de un objeto. Esto añade profundidad y realismo al evitar que la luz ambiental ilumine uniformemente todas las partes de un objeto.
+6. Mapa de Emisión (Emissive Map): Define qué partes de un objeto emiten luz propia. Esto puede ser utilizado para simular objetos que brillan, como pantallas, sin necesidad de fuentes de luz adicionales.
+7. Mapa de Rugosidad (Roughness Map): Determina qué áreas de la superficie son rugosas o lisas, afectando cómo la luz se dispersa o refleja en la superficie.
+8. Mapa de Metalicidad (Metalness Map): Utilizado en materiales que simulan metales, determina qué partes de la superficie se comportan como metal y cuáles como material no metálico.
+9. Mapa de Transparencia (Alpha Map): Define la transparencia de diferentes partes de un objeto, permitiendo crear efectos de material transparente o semi-transparente.
+10. Mapa de Bump (Bump Map): Similar al normal map, pero en lugar de modificar las normales de la superficie, simula pequeños detalles de relieve al afectar la percepción de profundidad y detalle en la superficie del material.
+
+### Principios PBR 
+Los principios PBR (Physically Based Rendering o Renderizado Basado en la Física) se refieren a un conjunto de técnicas de renderizado que buscan simular de manera más precisa cómo la luz interactúa con las superficies en el mundo real. El objetivo es lograr un aspecto más realista y predecible bajo diferentes condiciones de iluminación. Los principios PBR se basan en la física de la luz y los materiales para mejorar la calidad visual de las escenas 3D.
+
