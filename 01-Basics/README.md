@@ -524,6 +524,78 @@ En Three.js, hay varios tipos de texturas que se pueden utilizar para diferentes
 9. Mapa de Transparencia (Alpha Map): Define la transparencia de diferentes partes de un objeto, permitiendo crear efectos de material transparente o semi-transparente.
 10. Mapa de Bump (Bump Map): Similar al normal map, pero en lugar de modificar las normales de la superficie, simula pequeños detalles de relieve al afectar la percepción de profundidad y detalle en la superficie del material.
 
+```javascript
+const image = new Image()
+const texture = new THREE.Texture(image)
+texture.colorSpace = THREE.SRGBColorSpace
+
+image.onload = () => {
+    //Convertir la imagen en una textura
+    texture.needsUpdate = true
+}
+image.src = '/textures/door/color.jpg'
+```
+
+> También se puede cargar texturas de la siguiente manera
+```javascript
+const textureLoader = new THREE.TextureLoader()
+const texture = textureLoader.load(
+    '/textures/door/color.jpg',
+    () => {
+        // LOAD
+    },
+    () => {
+        // PROGRESS
+    },
+    () => {
+        // ERRORS
+    }
+)
+texture.colorSpace = THREE.SRGBColorSpace
+```
+
 ### Principios PBR 
 Los principios PBR (Physically Based Rendering o Renderizado Basado en la Física) se refieren a un conjunto de técnicas de renderizado que buscan simular de manera más precisa cómo la luz interactúa con las superficies en el mundo real. El objetivo es lograr un aspecto más realista y predecible bajo diferentes condiciones de iluminación. Los principios PBR se basan en la física de la luz y los materiales para mejorar la calidad visual de las escenas 3D.
 
+### LoadingManager
+El LoadingManager en Three.js es un gestor (o administrador) de carga que proporciona una manera de rastrear y manejar el estado de múltiples cargas de archivos. Se utiliza para controlar eventos como el inicio de la carga, el progreso, la carga exitosa de todos los archivos, y el manejo de errores durante la carga de recursos como texturas, modelos 3D, y otros archivos. Esto es especialmente útil en aplicaciones 3D complejas donde se cargan muchos recursos, y se desea informar al usuario sobre el progreso de la carga o realizar acciones específicas una vez que todos los recursos están disponibles.
+
+El LoadingManager ofrece varios puntos de enganche (callbacks) para diferentes eventos:
+
+* onStart: Se llama cuando comienza la carga de un ítem.
+* onLoad: Se llama cuando todos los ítems han sido cargados.
+* onProgress: Se llama mientras los ítems están siendo cargados, proporcionando detalles como la URL del ítem que se está cargando y el número de ítems cargados frente al total.
+* onError: Se llama si ocurre un error durante la carga de un ítem.
+
+```javascript
+const loadingManager = new THREE.LoadingManager()
+loadingManager.onStart = () => {
+    console.log("onStart")
+}
+loadingManager.onLoad = () => {
+    console.log("onLoad")
+}
+loadingManager.onProgress = () => {
+    console.log("onProgress")
+}
+loadingManager.onError = () => {
+    console.log("onErro")
+}
+
+const textureLoader = new THREE.TextureLoader(loadingManager)
+```
+
+### UV Unwrapping
+El "UV Unwrapping" es un proceso utilizado en gráficos 3D para hacer un mapeo bidimensional de una textura sobre una superficie tridimensional (modelo 3D). Este proceso es similar a desplegar un mapa o plano en dos dimensiones de un objeto tridimensional. Los términos "U" y "V" representan los ejes de las coordenadas de la textura, que son análogos a los ejes "X" e "Y" en un plano bidimensional, pero se utilizan para evitar la confusión con las coordenadas espaciales del modelo 3D.
+
+El objetivo del UV unwrapping es asignar cada vértice del modelo 3D a una posición específica en una textura plana, de modo que cuando la textura se aplique al modelo, se muestre correctamente en su superficie. Este proceso permite a los artistas y diseñadores crear detalles complejos y patrones en las superficies de los modelos 3D sin necesidad de aumentar la cantidad de polígonos del modelo, lo que puede ser crucial para el rendimiento en aplicaciones en tiempo real como los videojuegos.
+
+El proceso de UV unwrapping implica varios pasos:
+
+1. Selección de Costuras: Determinar y marcar las "costuras" en el modelo 3D. Las costuras son bordes donde la malla se "cortará" para poder desplegarse. La elección de las costuras afecta cómo se distribuirá la textura sobre el modelo y puede influir en la visibilidad de las transiciones en la textura.
+
+2. Despliegue: Después de marcar las costuras, el modelo se "despliega" o se "abre" en un plano 2D. Este paso es donde el UV unwrapping toma su nombre, ya que se asemeja al proceso de desplegar una caja de cartón para ver todas sus caras en un plano.
+
+3. Ajuste y Optimización: Una vez desplegado, el mapeo UV puede requerir ajustes para maximizar el uso del espacio de la textura, minimizar la distorsión y asegurar que los detalles importantes de la textura se mapeen correctamente en las áreas correspondientes del modelo.
+
+4. Texturizado: Con el mapeo UV completado, se pueden pintar o generar texturas que se ajusten precisamente al modelo 3D según el mapeo UV. Esto permite que los detalles de la textura, como colores, patrones y efectos de iluminación, se apliquen con precisión en el modelo.
